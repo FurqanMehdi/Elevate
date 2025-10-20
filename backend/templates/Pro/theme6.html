@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Lato'; margin: 40px; color: #333; }
+    .timeline { border-left: 4px solid #4f46e5; padding-left: 20px; }
+    .timeline-item { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>{{name}}</h1>
+  <p>{{domain}}</p>
+  <div class="timeline">
+    {{#each experience}}
+      <div class="timeline-item">
+        <h3>{{role}} - {{company}}</h3>
+        <small>{{duration}}</small>
+        <p>{{description}}</p>
+      </div>
+    {{/each}}
+  </div>
+</body>
+</html>

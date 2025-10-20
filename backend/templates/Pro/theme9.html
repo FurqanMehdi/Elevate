@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { display: flex; font-family: 'Nunito'; height: 100vh; margin: 0; }
+    .left { width: 35%; background: #3730a3; color: white; padding: 40px; }
+    .right { flex: 1; padding: 40px; }
+  </style>
+</head>
+<body>
+  <div class="left">
+    <h1>{{name}}</h1>
+    <p>{{domain}}</p>
+  </div>
+  <div class="right">
+    <h2>Experience</h2>
+    {{#each experience}}<p><b>{{role}}</b> - {{company}}</p>{{/each}}
+  </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Helvetica'; margin: 40px; }
+    h1 { border-bottom: 3px solid #007acc; color: #007acc; }
+    h2 { border-bottom: 1px solid #007acc; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h1>{{name}}</h1>
+  <p>{{domain}}</p>
+  <h2>Skills</h2>
+  <ul>{{#each skills}}<li>{{this}}</li>{{/each}}</ul>
+</body>
+</html>

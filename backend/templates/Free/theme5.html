@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: 'Segoe UI'; margin: 20px; display: flex; }
+    .left { width: 35%; padding-right: 20px; border-right: 2px solid #ccc; }
+    .right { width: 65%; padding-left: 20px; }
+    h2 { color: #6a0dad; }
+  </style>
+</head>
+<body>
+  <div class="left">
+    <h1>{{name}}</h1>
+    <p>{{domain}}</p>
+    <h2>Skills</h2>
+    <ul>{{#each skills}}<li>{{this}}</li>{{/each}}</ul>
+  </div>
+  <div class="right">
+    {{#if experience.length}}
+      <h2>Experience</h2>
+      {{#each experience}}<p><b>{{role}}</b> - {{company}} ({{duration}})</p>{{/each}}
+    {{/if}}
+  </div>
+</body>
+</html>

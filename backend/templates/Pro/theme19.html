@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { display: flex; font-family: 'Nunito'; margin: 0; }
+    .left { width: 35%; background: #111827; color: #fff; padding: 30px; text-align: center; }
+    .right { flex: 1; padding: 40px; }
+    .timeline { border-left: 3px solid #2563eb; margin-top: 20px; padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="left">
+    <img src="{{profileImage}}" width="120" style="border-radius:50%;">
+    <h1>{{name}}</h1><p>{{domain}}</p>
+  </div>
+  <div class="right">
+    <h2>Experience</h2>
+    <div class="timeline">
+      {{#each experience}}<p><b>{{role}}</b> — {{company}}<br>{{duration}}</p>{{/each}}
+    </div>
+  </div>
+</body>
+</html>

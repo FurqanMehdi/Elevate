@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: 'Nunito'; margin: 40px; color: #333; }
+    h1 { color: #2563eb; }
+    .timeline { border-left: 3px solid #2563eb; padding-left: 15px; }
+  </style>
+</head>
+<body>
+  <h1>{{name}}</h1>
+  <p><strong>Domain:</strong> {{domain}}</p>
+
+  <div class="timeline">
+    {{#each experience}}
+      <p><b>{{role}}</b> at {{company}} ({{duration}})<br>{{description}}</p>
+    {{/each}}
+  </div>
+</body>
+</html>

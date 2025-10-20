@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: 'Open Sans';
+      background: linear-gradient(120deg, #ff7e5f, #feb47b);
+      color: white;
+      margin: 0; padding: 50px;
+    }
+    .box { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>{{name}}</h1>
+    <p>{{domain}}</p>
+    <h2>Skills</h2>
+    {{#each skills}}<p>{{this}}</p>{{/each}}
+  </div>
+</body>
+</html>

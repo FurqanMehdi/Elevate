@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Inter'; background: #121212; color: white; margin: 40px; }
+    h1 { color: #03dac6; }
+    h2 { color: #bb86fc; }
+  </style>
+</head>
+<body>
+  <h1>{{name}}</h1>
+  <p><strong>Domain:</strong> {{domain}}</p>
+
+  {{#if projects.length}}
+    <h2>Projects</h2>
+    {{#each projects}}
+      <p><b>{{title}}</b> — {{description}}</p>
+    {{/each}}
+  {{/if}}
+</body>
+</html>

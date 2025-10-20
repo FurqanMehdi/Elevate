@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      color: #e2e8f0; font-family: 'Roboto Mono'; padding: 50px;
+    }
+    h1 { color: #38bdf8; font-size: 32px; }
+    h2 { color: #94a3b8; border-bottom: 1px solid #475569; }
+  </style>
+</head>
+<body>
+  <h1>{{name}}</h1>
+  <p>{{domain}}</p>
+  <h2>AI & Tech Projects</h2>
+  {{#each projects}}<p><b>{{title}}</b>: {{description}}</p>{{/each}}
+</body>
+</html>

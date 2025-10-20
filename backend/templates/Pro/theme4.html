@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Segoe UI'; margin: 0; }
+    header {
+      background: #0056b3; color: white; padding: 30px; text-align: center;
+    }
+    section { padding: 30px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{name}}</h1>
+    <p>{{domain}}</p>
+  </header>
+  <section>
+    <h2>Skills</h2>
+    <ul>{{#each skills}}<li>{{this}}</li>{{/each}}</ul>
+  </section>
+</body>
+</html>
