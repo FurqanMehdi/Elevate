@@ -1,21 +1,19 @@
 import fetch from "node-fetch";
 import User from "../models/User.js";
 
-// ✅ Correct Paddle base URLs (v2)
+// ✅ Use Paddle v2 endpoints
 const PADDLE_API_URL =
   process.env.PADDLE_ENV === "sandbox"
-    ? "https://sandbox-api.paddle.com"
-    : "https://api.paddle.com";
+    ? "https://sandbox-api.paddle.com/v2"
+    : "https://api.paddle.com/v2";
 
 export const createCheckout = async (req, res) => {
   try {
     console.log("🔵 Using Paddle API:", PADDLE_API_URL);
 
-    // 1️⃣ Find the user
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // 2️⃣ Build checkout payload
     const payload = {
       items: [
         {
@@ -33,7 +31,6 @@ export const createCheckout = async (req, res) => {
       cancel_url: "https://elevate-tbrr.onrender.com/cancel",
     };
 
-    // 3️⃣ Send request to Paddle
     const response = await fetch(`${PADDLE_API_URL}/checkout-links`, {
       method: "POST",
       headers: {
@@ -46,7 +43,6 @@ export const createCheckout = async (req, res) => {
     const data = await response.json();
     console.log("🟢 Paddle Response:", data);
 
-    // 4️⃣ Handle API errors
     if (!response.ok) {
       console.error("🔴 Paddle error response:", data);
       return res.status(response.status).json({
@@ -55,7 +51,6 @@ export const createCheckout = async (req, res) => {
       });
     }
 
-    // 5️⃣ Success — send checkout URL back to frontend
     res.status(200).json({
       success: true,
       checkoutUrl: data.data?.url,
@@ -69,7 +64,6 @@ export const createCheckout = async (req, res) => {
   }
 };
 
-// ✅ Paddle webhook
 export const paddleWebhook = async (req, res) => {
   try {
     const event = req.body;
