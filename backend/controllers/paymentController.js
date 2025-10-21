@@ -3,8 +3,8 @@ import User from "../models/User.js";
 
 const PADDLE_API_URL =
   process.env.PADDLE_ENV === "sandbox"
-    ? "https://sandbox-api.paddle.com/v2"
-    : "https://api.paddle.com/v2";
+    ? "https://sandbox-api.paddle.com"
+    : "https://api.paddle.com";
 
 export const createCheckout = async (req, res) => {
   try {
@@ -14,23 +14,25 @@ export const createCheckout = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const payload = {
-      items: [
-        {
-          price_id: process.env.PADDLE_PRO_PRICE_ID,
-          quantity: 1,
+      checkout: {
+        customer: {
+          email: user.email,
         },
-      ],
-      customer: {
-        email: user.email,
+        items: [
+          {
+            price_id: process.env.PADDLE_PRO_PRICE_ID,
+            quantity: 1,
+          },
+        ],
+        custom_data: {
+          userId: user._id.toString(),
+        },
+        success_url: "https://elevate-tbrr.onrender.com/success",
+        cancel_url: "https://elevate-tbrr.onrender.com/cancel",
       },
-      custom_data: {
-        userId: user._id.toString(),
-      },
-      success_url: "https://elevate-tbrr.onrender.com/success",
-      cancel_url: "https://elevate-tbrr.onrender.com/cancel",
     };
 
-    console.log("🟢 Payload being sent:", payload);
+    console.log("🟢 Sending payload:", JSON.stringify(payload, null, 2));
 
     const response = await fetch(`${PADDLE_API_URL}/checkout-links`, {
       method: "POST",
@@ -45,7 +47,6 @@ export const createCheckout = async (req, res) => {
     console.log("🟢 Paddle Response:", data);
 
     if (!response.ok) {
-      console.error("🔴 Paddle Error Response:", data);
       return res.status(response.status).json({
         message: "Paddle request failed",
         error: data,
@@ -57,7 +58,7 @@ export const createCheckout = async (req, res) => {
       checkoutUrl: data.data?.url,
     });
   } catch (err) {
-    console.error("🔴 Payment initiation error:", err.message);
+    console.error("🔴 Payment initiation failed:", err.message);
     res.status(500).json({
       message: "Payment initiation failed",
       error: err.message,
