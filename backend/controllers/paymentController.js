@@ -1,18 +1,27 @@
 import fetch from "node-fetch";
 import User from "../models/User.js";
 
+// 🌍 Automatically select Paddle API environment
 const PADDLE_API_URL =
   process.env.PADDLE_ENV === "sandbox"
     ? "https://api.sandbox.paddle.com"
     : "https://api.paddle.com";
 
+/**
+ * @desc Create Paddle checkout link
+ * @route POST /api/payments/create-checkout
+ * @access Private
+ */
 export const createCheckout = async (req, res) => {
   try {
-    console.log("🔵 Using API URL:", PADDLE_API_URL);
+    console.log("🔵 Using Paddle API:", PADDLE_API_URL);
 
     const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    // ✅ Checkout payload for Paddle
     const payload = {
       items: [
         {
@@ -26,10 +35,11 @@ export const createCheckout = async (req, res) => {
       custom_data: {
         userId: user._id.toString(),
       },
-      success_url: "https://google.com",
-      cancel_url: "https://google.com",
+      success_url: "https://elevate-tbrr.onrender.com/success",
+      cancel_url: "https://elevate-tbrr.onrender.com/cancel",
     };
 
+    // ✅ Send request to Paddle API
     const response = await fetch(`${PADDLE_API_URL}/checkout-links`, {
       method: "POST",
       headers: {
@@ -42,6 +52,7 @@ export const createCheckout = async (req, res) => {
     const data = await response.json();
     console.log("🔵 Paddle Response:", data);
 
+    // ❌ Handle Paddle API errors gracefully
     if (!response.ok) {
       return res.status(response.status).json({
         message: "Paddle request failed",
@@ -49,37 +60,44 @@ export const createCheckout = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    // ✅ Return checkout URL to frontend
+    return res.status(200).json({
       success: true,
       checkoutUrl: data.data?.url,
     });
   } catch (err) {
     console.error("🔴 Paddle Error:", err.message);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Payment initiation failed",
       error: err.message,
     });
   }
 };
 
-
-
+/**
+ * @desc Paddle webhook to handle completed transactions
+ * @route POST /api/payments/webhook
+ * @access Public
+ */
 export const paddleWebhook = async (req, res) => {
   try {
     const event = req.body;
 
     if (event.type === "transaction.completed") {
       const userId = event.data.custom_data?.userId;
-      if (!userId)
-        return res.status(400).json({ message: "No userId in event" });
 
+      if (!userId) {
+        return res.status(400).json({ message: "No userId in event" });
+      }
+
+      // ✅ Upgrade user plan
       await User.findByIdAndUpdate(userId, { plan: "pro" });
       console.log(`✅ User ${userId} upgraded to Pro`);
     }
 
-    res.status(200).json({ received: true });
+    return res.status(200).json({ received: true });
   } catch (err) {
     console.error("Webhook error:", err.message);
-    res.status(500).json({ message: "Webhook failed" });
+    return res.status(500).json({ message: "Webhook failed" });
   }
 };
